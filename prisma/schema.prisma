@@ -1,0 +1,49 @@
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+model WordList {
+  id          String   @id @default(cuid())
+  name        String   @unique
+  description String?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  words       Word[]
+  activities  Activity[]
+}
+
+model Word {
+  id         String   @id @default(cuid())
+  word       String
+  phonemes   String   // JSON array stored as string, e.g. '["b","e","d"]'
+  wordLength Int      // number of phonemes (3, 4, or 5)
+  wordListId String
+  wordList   WordList @relation(fields: [wordListId], references: [id], onDelete: Cascade)
+
+  @@unique([word, wordListId])
+  @@index([wordListId])
+  @@index([wordLength])
+}
+
+model Activity {
+  id           String   @id @default(cuid())
+  name         String
+  activityType String   // "wordle" or "word-search"
+  wordLength   Int      // 3, 4, or 5
+  maxGuesses   Int      @default(6)
+  showHints    Boolean  @default(true)
+  gridSize     Int      @default(10)
+  wordCount    Int      @default(5)
+  wordListId   String
+  wordList     WordList @relation(fields: [wordListId], references: [id], onDelete: Cascade)
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  @@index([wordListId])
+  @@index([activityType])
+}
