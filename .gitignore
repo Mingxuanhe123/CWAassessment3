@@ -17,3 +17,10 @@ yarn-error.log*
 
 # Vercel
 .vercel
+# Playwright test outputs
+playwright-report/
+test-results/
+
+# JMeter test result files
+*.jtl
+jmeter-report/

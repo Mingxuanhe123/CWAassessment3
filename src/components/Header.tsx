@@ -33,6 +33,7 @@ export default function Header() {
               <Link href="/word-search" onClick={() => setMenuOpen(false)} className="block px-4 py-2 hover:bg-gray-100">Word Search</Link>
               <Link href="/word-lists" onClick={() => setMenuOpen(false)} className="block px-4 py-2 hover:bg-gray-100">Word Lists</Link>
               <Link href="/activities" onClick={() => setMenuOpen(false)} className="block px-4 py-2 hover:bg-gray-100">Activities</Link>
+              <Link href="/dashboard" onClick={() => setMenuOpen(false)} className="block px-4 py-2 hover:bg-gray-100">Dashboard</Link>
               <Link href="/about" onClick={() => setMenuOpen(false)} className="block px-4 py-2 hover:bg-gray-100">About</Link>
               <Link href="/settings" onClick={() => setMenuOpen(false)} className="block px-4 py-2 hover:bg-gray-100 rounded-b-md">Settings</Link>
             </nav>
@@ -48,6 +49,7 @@ export default function Header() {
           <Link href="/word-search" className="hover:underline">Word Search</Link>
           <Link href="/word-lists" className="hover:underline">Word Lists</Link>
           <Link href="/activities" className="hover:underline">Activities</Link>
+          <Link href="/dashboard" className="hover:underline">Dashboard</Link>
           <Link href="/about" className="hover:underline">About</Link>
           <Link href="/settings" className="hover:underline">Settings</Link>
         </nav>

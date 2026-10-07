@@ -1,5 +1,7 @@
 "use client";
 
+import { reportGeneration } from "@/lib/telemetry";
+
 import { useState, useEffect, useCallback } from "react";
 import { phonemeHints, allPhonemes } from "@/data/phonemeCorpus";
 
@@ -75,6 +77,7 @@ export default function WordleClient() {
   }, [wordLength]);
 
   const startNewGame = useCallback(() => {
+    const genStart = performance.now();
     if (useBackend && backendWords.length > 0) {
       const random = backendWords[Math.floor(Math.random() * backendWords.length)];
       setTargetPhonemes(JSON.parse(random.phonemes));
@@ -91,6 +94,9 @@ export default function WordleClient() {
     setCurrentGuess([]);
     setGameStatus("playing");
     setUsedPhonemes({});
+    reportGeneration("wordle", true, {
+      durationMs: Math.round(performance.now() - genStart),
+    });
   }, [useBackend, backendWords, wordLength]);
 
   const evaluateGuess = (guess: string[]): LetterState[] => {
@@ -274,7 +280,7 @@ function submit(){
 function newGame(){guesses=[];current=[];done=false;document.getElementById('message').textContent='';document.getElementById('answer').textContent='';render()}
 render();
 </script>
-<div class="footer">Mingxuan He | Student ID: 19884912 | Phoneme Activity Builder — Assessment 2</div>
+<div class="footer">Mingxuan He | Student ID: 19884912 | Phoneme Activity Builder — Assessment 3</div>
 </body>
 </html>`;
 

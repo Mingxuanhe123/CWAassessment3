@@ -1,5 +1,7 @@
 "use client";
 
+import { reportGeneration } from "@/lib/telemetry";
+
 import { useState, useEffect } from "react";
 import { phonemeHints, allPhonemes } from "@/data/phonemeCorpus";
 
@@ -127,11 +129,25 @@ export default function WordSearchClient() {
   };
 
   const buildGrid = () => {
-    if (!selectedWords.length) return;
-    const size = Math.max(wordLength + 3, gridSize);
-    const data = generateGrid(selectedWords, size);
-    setGridData(data);
-    setFoundWords(new Set());
+    const genStart = performance.now();
+    if (!selectedWords.length) {
+      reportGeneration("word-search", false, { failureReason: "Word list is empty" });
+      return;
+    }
+    try {
+      const size = Math.max(wordLength + 3, gridSize);
+      const data = generateGrid(selectedWords, size);
+      setGridData(data);
+      setFoundWords(new Set());
+      reportGeneration("word-search", true, {
+        durationMs: Math.round(performance.now() - genStart),
+      });
+    } catch (e) {
+      reportGeneration("word-search", false, {
+        failureReason: e instanceof Error ? e.message : "Grid generation failed",
+        durationMs: Math.round(performance.now() - genStart),
+      });
+    }
   };
 
   const handleCellMouseDown = (row: number, col: number) => {
@@ -310,7 +326,7 @@ function confirmSelection(){
 function clearSelection(){selected=[];updateCellStyles();updateMessage()}
 initGrid();
 </script>
-<div class="footer">Mingxuan He | Student ID: 19884912 | Phoneme Activity Builder — Assessment 2</div>
+<div class="footer">Mingxuan He | Student ID: 19884912 | Phoneme Activity Builder — Assessment 3</div>
 </body>
 </html>`;
 

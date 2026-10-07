@@ -47,3 +47,26 @@ model Activity {
   @@index([wordListId])
   @@index([activityType])
 }
+
+// ===== Assessment 3: observability & telemetry =====
+
+model GenerationEvent {
+  id            String   @id @default(cuid())
+  activityType  String   // "wordle" or "word-search"
+  success       Boolean
+  failureReason String?  // e.g. "Word list is empty"
+  durationMs    Int      @default(0)
+  createdAt     DateTime @default(now())
+
+  @@index([createdAt])
+  @@index([activityType])
+}
+
+model PageView {
+  id         String   @id @default(cuid())
+  path       String
+  durationMs Int      @default(0) // time on page in ms
+  createdAt  DateTime @default(now())
+
+  @@index([createdAt])
+}
